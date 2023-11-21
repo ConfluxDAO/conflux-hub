@@ -26,7 +26,8 @@
     "react-spring": "^9.4.5",
     "tippy.js": "^6.3.7",
     "web3": "^1.7.3",
-    "zustand": "^4.0.0"
+    "zustand": "^4.0.0",
+    "immer": "10.0.3"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",

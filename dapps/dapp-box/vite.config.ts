@@ -11,7 +11,10 @@ const ProxyConfig = {
 export default defineConfig({
     plugins: [react()],
     resolve: {
-        alias: { web3: path.resolve(__dirname, '../../node_modules/web3/dist/web3.min.js') },
+        alias: {
+            web3: path.resolve(__dirname, '../../node_modules/web3/dist/web3.min.js'),
+            immer: path.resolve(__dirname, '../../node_modules/immer/dist/immer.esm.js')
+        },
     },
     server: {
         proxy: {
