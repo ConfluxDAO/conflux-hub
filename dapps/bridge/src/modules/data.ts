@@ -31,16 +31,16 @@ const namespace = `bridge-new1-${Networks.core.chainId}`;
 export const dataStore = create(
     subscribeWithSelector(
         () =>
-            ({
-                data: (LocalStorage.getItem('data', namespace) as Array<any>) ?? undefined,
-                sourceChain: (LocalStorage.getItem('sourceChain', namespace) as string) ?? undefined,
-                sourceChains: (LocalStorage.getItem('sourceChains', namespace) as Array<string>) ?? undefined,
-                destinationChain: (LocalStorage.getItem('destinationChain', namespace) as string) ?? undefined,
-                destinationChains: (LocalStorage.getItem('destinationChains', namespace) as Array<string>) ?? undefined,
-                token: (LocalStorage.getItem('token', namespace) as string) ?? undefined,
-                tokens: (LocalStorage.getItem('tokens', namespace) as Array<string>) ?? undefined,
-                commonTokens: commonTokensCache.toArr(),
-            } as DataStore)
+        ({
+            data: (LocalStorage.getItem('data', namespace) as Array<any>) ?? undefined,
+            sourceChain: (LocalStorage.getItem('sourceChain', namespace) as string) ?? undefined,
+            sourceChains: (LocalStorage.getItem('sourceChains', namespace) as Array<string>) ?? undefined,
+            destinationChain: (LocalStorage.getItem('destinationChain', namespace) as string) ?? undefined,
+            destinationChains: (LocalStorage.getItem('destinationChains', namespace) as Array<string>) ?? undefined,
+            token: (LocalStorage.getItem('token', namespace) as string) ?? undefined,
+            tokens: (LocalStorage.getItem('tokens', namespace) as Array<string>) ?? undefined,
+            commonTokens: commonTokensCache.toArr(),
+        } as DataStore)
     )
 );
 
@@ -76,6 +76,7 @@ fetch(crossSpaceTokenListUrl)
         const data: any = {
             'Conflux eSpace': {
                 Ethereum: {
+                    FC: ['cBridge'],
                     WETH: ['cBridge'],
                     USDT: ['cBridge'],
                     USDC: ['cBridge'],
@@ -93,6 +94,7 @@ fetch(crossSpaceTokenListUrl)
             },
             Ethereum: {
                 'Conflux eSpace': {
+                    FC: ['cBridge'],
                     WETH: ['cBridge'],
                     USDT: ['cBridge'],
                     USDC: ['cBridge'],
@@ -282,9 +284,8 @@ export const createHref = ({
         return location.origin + '/espace-bridge/espace-cross-chain';
     }
     if (route === 'cBridge') {
-        return `https://cbridge.celer.network/${destinationChain === 'Conflux eSpace' ? '1' : '1030'}/${
-            destinationChain === 'Conflux eSpace' ? '1030' : '1'
-        }/${token}`;
+        return `https://cbridge.celer.network/${destinationChain === 'Conflux eSpace' ? '1' : '1030'}/${destinationChain === 'Conflux eSpace' ? '1030' : '1'
+            }/${token}`;
     }
     return '';
 };
