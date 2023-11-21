@@ -19,9 +19,4 @@ export default defineConfig({
             '/rpcsponsor': ProxyConfig,
         },
     },
-    build: {
-        rollupOptions: {
-            external: ['immer'], // 添加这行来指定 immer 为外部依赖
-        },
-    },
 });
