@@ -53,7 +53,7 @@ const CommonTokenCount = 10;
 const commonTokensCache = new Cache<Token>(CommonTokenCount - 1, 'cross-space-common-tokens');
 
 export const currentTokenStore = create(subscribeWithSelector(() => ({
-    currentToken: (LocalStorage.getItem('currentToken', 'cross-space') as Token) ?? nativeToken,
+    currentToken: (LocalStorage.getItem('currentToken', 'cross-space') as Token) ?? FansCoin,
     commonTokens: [nativeToken, ...commonTokensCache.toArr()],
 }) as TokenStore));
 

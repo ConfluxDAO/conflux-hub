@@ -20,10 +20,11 @@ import Search from 'common/assets/icons/search.svg';
 import Suggest from 'cross-space/src/assets/suggest.svg';
 import Switch from 'cross-space/src/assets/turn-page.svg';
 import Open from 'cross-space/src/assets/open.svg';
-import { useToken, nativeToken, type Token } from 'cross-space/src/store/index';
+import { useToken, nativeToken, type Token, FansCoin } from 'cross-space/src/store/index';
 import { useTokenList, tokenListStore, deleteSearchToken } from './tokenListStore';
 import judgeAddressValid from './judgeAddressValid';
 import { useIsMetaMaskHostedByFluent } from 'common/hooks/useMetaMaskHostedByFluent';
+import { To } from 'react-router-dom';
 
 const transitions = {
     en: {
@@ -62,7 +63,7 @@ const TokenListDropdown: React.FC<{ children: (triggerDropdown: () => void, visi
             else
                 disabled = {
                     text: 'To cross space CRC20 token, please install MetaMask first.',
-                    onClickCancel: () => setCurrentToken(nativeToken),
+                    onClickCancel: () => setCurrentToken(FansCoin as Token),
                     cancelButtonText: 'Switch Token to CFX',
                 };
         } else if (!pre && fluentStatus === 'not-active') {
@@ -76,7 +77,7 @@ const TokenListDropdown: React.FC<{ children: (triggerDropdown: () => void, visi
                 text: `To cross space CRC20 token, please connect to ${isMetaMaskHostedByFluent ? 'Fluent' : 'MetaMask'} first.`,
                 onClickOk: isMetaMaskHostedByFluent ? connectToConflux : connectToEthereum,
                 okButtonText: 'Connect',
-                ...(currentToken.isNative ? {} : { onClickCancel: () => setCurrentToken(nativeToken), cancelButtonText: 'Switch Token to CFX' }),
+                ...(currentToken.isNative ? {} : { onClickCancel: () => setCurrentToken(FansCoin as Token), cancelButtonText: 'Switch Token to CFX' }),
             };
         } else if (!pre && Networks.core?.chainId !== fluentChainId && !isMetaMaskHostedByFluent) {
             disabled = {
@@ -89,7 +90,7 @@ const TokenListDropdown: React.FC<{ children: (triggerDropdown: () => void, visi
                 text: `To cross space CRC20 token, please switch ${isMetaMaskHostedByFluent ? 'Fluent' : 'MetaMask'} to ${Networks.eSpace.chainName} first.`,
                 onClickOk: switchToESpace,
                 okButtonText: 'Switch',
-                ...(currentToken.isNative ? {} : { onClickCancel: () => setCurrentToken(nativeToken), cancelButtonText: 'Switch Token to CFX' }),
+                ...(currentToken.isNative ? {} : { onClickCancel: () => setCurrentToken(FansCoin as Token), cancelButtonText: 'Switch Token to CFX' }),
             };
         }
         if (disabled === false) disabled = tokenListStore.getState().disabled;
@@ -166,7 +167,7 @@ const DropdownContent: React.FC<{ fromSpace: 'core' | 'eSpace'; visible: boolean
     const [searchToken, setSearchToken] = useState<'waiting' | 'searching' | false | Token>('waiting');
     const handleFilterChange = useCallback<React.FormEventHandler<HTMLInputElement>>(
         debounce((evt) => setFilter((evt.target as HTMLInputElement).value), 200),
-        []
+        [],
     );
 
     useEffect(() => {
@@ -183,7 +184,7 @@ const DropdownContent: React.FC<{ fromSpace: 'core' | 'eSpace'; visible: boolean
                 (token.isNative
                     ? [token.core_space_name, token.core_space_symbol]
                     : [token.core_space_name, token.core_space_symbol, token.evm_space_name, token.evm_space_symbol, token.native_address, token.mapped_address]
-                ).some((str) => str.search(new RegExp(escapeRegExp(filter), 'i')) !== -1)
+                ).some((str) => str.search(new RegExp(escapeRegExp(filter), 'i')) !== -1),
             )
         ) {
             setSearchToken('waiting');
@@ -214,7 +215,7 @@ const DropdownContent: React.FC<{ fromSpace: 'core' | 'eSpace'; visible: boolean
             (token.isNative
                 ? [token.core_space_name, token.core_space_symbol]
                 : [token.core_space_name, token.core_space_symbol, token.evm_space_name, token.evm_space_symbol, token.native_address, token.mapped_address]
-            ).some((str) => str.search(new RegExp(escapeRegExp(filter), 'i')) !== -1)
+            ).some((str) => str.search(new RegExp(escapeRegExp(filter), 'i')) !== -1),
         );
     }, [filter, searchToken, tokenList]);
 
@@ -249,7 +250,7 @@ const DropdownContent: React.FC<{ fromSpace: 'core' | 'eSpace'; visible: boolean
                                 'shrink-0 px-[16px] h-[32px] leading-[32px] rounded-[18px] border border-[#EAECEF] text-center text-[14px] cursor-pointer hover:border-[#808BE7] transition-colors',
                                 (commonToken.isNative ? currentToken.isNative : commonToken.native_address === currentToken.native_address)
                                     ? 'bg-[#808BE7] text-white pointer-events-none'
-                                    : 'text-[#3D3F4C]'
+                                    : 'text-[#3D3F4C]',
                             )}
                             onClick={() => {
                                 setCurrentToken(commonToken);
@@ -369,7 +370,7 @@ const TokenItem = memo<TokenItemProps>(
                     console.error(`Add ${symbol} to ${space === 'core' ? 'Fluent' : 'MetaMask'} failed!`);
                 }
             },
-            [space]
+            [space],
         );
 
         const handleClickDelete = useCallback<React.MouseEventHandler<HTMLImageElement>>(
@@ -377,7 +378,7 @@ const TokenItem = memo<TokenItemProps>(
                 evt.stopPropagation();
                 setTimeout(() => deleteSearchToken(token, { isCurrent, setCurrentToken, deleteFromCommonTokens }), 100);
             },
-            [isCurrent]
+            [isCurrent],
         );
 
         return (
@@ -385,7 +386,7 @@ const TokenItem = memo<TokenItemProps>(
                 className={cx(
                     'relative flex justify-between items-center h-[56px] pl-[16px] pr-[20px] bg-white',
                     isCurrent ? 'bg-[#808BE7] bg-opacity-30' : 'hover:bg-[#808BE7] hover:bg-opacity-10 cursor-pointer',
-                    { 'cursor-not-allowed': !token.isNative && !nativeSpace }
+                    { 'cursor-not-allowed': !token.isNative && !nativeSpace },
                 )}
                 onClick={() => {
                     if (!token.isNative && !nativeSpace) return;
@@ -425,7 +426,7 @@ const TokenItem = memo<TokenItemProps>(
                 {!token.isNative && !token.nativeSpace && <div className="text-[12px] text-[#A9ABB2]">This token can't cross space</div>}
             </div>
         );
-    }
+    },
 );
 
 export default TokenListDropdown;
