@@ -54,7 +54,7 @@ const commonTokensCache = new Cache<Token>(CommonTokenCount - 1, 'cross-space-co
 
 export const currentTokenStore = create(subscribeWithSelector(() => ({
     currentToken: (LocalStorage.getItem('currentToken', 'cross-space') as Token) ?? FansCoin as Token,
-    commonTokens: [nativeToken, ...commonTokensCache.toArr()],
+    commonTokens: [FansCoin, nativeToken, ...commonTokensCache.toArr()],
 }) as TokenStore));
 
 const selectors = {
