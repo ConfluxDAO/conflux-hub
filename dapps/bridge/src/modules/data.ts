@@ -49,7 +49,7 @@ export const map: Record<'shuttleFlowChains' | 'shuttleFlowFromTokenAddress' | '
     namespace
 ) as any) || {
     shuttleFlowChains: {
-        'Conflux Core': 'cfx',
+        // 'Conflux Core': 'cfx',
         Ethereum: 'eth',
         'BSC Chain': 'bsc',
         // OKExChain: 'oec',

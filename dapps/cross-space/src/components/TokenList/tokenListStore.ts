@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import LocalStorage from 'localstorage-enhance';
-import { nativeToken, type Token } from 'cross-space/src/store/index';
+import { nativeToken, FansCoin, type Token } from 'cross-space/src/store/index';
 import { isProduction } from 'common/conf/Networks';
 
 export const innerTokenListUrl = isProduction
@@ -31,16 +31,16 @@ export const tokenListStore = create<TokenListStore>((set) => ({
 const mergeInnerTokenList = (fetchRes: FetchRes) => {
     const fetchedTokenList = [...fetchRes?.core_native_tokens, ...fetchRes?.evm_native_tokens].map(
         (token) =>
-            ({
-                ...token,
-                nativeSpace: token.native_address.startsWith('0x') ? 'eSpace' : 'core',
-                isInner: true,
-            } as Token)
+        ({
+            ...token,
+            nativeSpace: token.native_address.startsWith('0x') ? 'eSpace' : 'core',
+            isInner: true,
+        } as Token)
     );
     const currentTokenList = tokenListStore.getState().tokenList;
     const tokensNotInner = currentTokenList.filter((token) => !token.isInner && !token.isNative);
 
-    const mergeRes = [nativeToken, ...fetchedTokenList, ...tokensNotInner];
+    const mergeRes = [FansCoin as Token, nativeToken, ...fetchedTokenList, ...tokensNotInner];
     LocalStorage.setItem({ key: 'innerTokenList', data: mergeRes, namespace: 'cross-space' });
     return mergeRes;
 };

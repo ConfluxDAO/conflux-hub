@@ -48,7 +48,7 @@ const AppRouter = () => {
         <ModeContext.Provider value={mode}>
             <LocaleContext.Provider value={locale}>
                 <Router>
-                    <Navbar handleSwitchLocale={handleSwitchLocale} handleSwitchMode={handleSwitchMode} dappIcon={CrossSpaceIcon} dappName="Cross Space" />
+                    <Navbar handleSwitchLocale={handleSwitchLocale} handleSwitchMode={handleSwitchMode} dappIcon={CrossSpaceIcon} dappName="FansCoin Cross Space Bridge" />
                     <CustomScrollbar contentClassName='main-scroll'>
                         <Modules />
                     </CustomScrollbar>

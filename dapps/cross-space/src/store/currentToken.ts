@@ -16,6 +16,20 @@ export const nativeToken = {
     isNative: true
 } as Token;
 
+
+export const FansCoin = {
+    core_space_name: "FansCoin",
+    core_space_symbol: "FC",
+    evm_space_name: "FansCoin",
+    evm_space_symbol: "FC",
+    decimals: 18,
+    icon: "https://scan-icons.oss-cn-hongkong.aliyuncs.com/mainnet/cfx%3Aachc8nxj7r451c223m18w2dwjnmhkd6rxawrvkvsy2.svg",
+    isInner: true,
+    nativeSpace: 'core',
+    native_address: "cfx:achc8nxj7r451c223m18w2dwjnmhkd6rxawrvkvsy2",
+    mapped_address: "0xba2289fee4673ef00ee8d8dae260965ab543b68f",
+}
+
 export interface Token {
     native_address: string;
     mapped_address: string;
@@ -55,7 +69,7 @@ export const startSubToken = () => {
             LocalStorage.setItem({ key: 'currentToken', data: nativeToken, namespace: 'cross-space' });
         }
     }, { fireImmediately: true });
-    
+
     return unsub;
 }
 
