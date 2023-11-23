@@ -53,7 +53,7 @@ const CommonTokenCount = 10;
 const commonTokensCache = new Cache<Token>(CommonTokenCount - 1, 'cross-space-common-tokens');
 
 export const currentTokenStore = create(subscribeWithSelector(() => ({
-    currentToken: (LocalStorage.getItem('currentToken', 'cross-space') as Token) ?? FansCoin,
+    currentToken: (LocalStorage.getItem('currentToken', 'cross-space') as Token) ?? FansCoin as Token,
     commonTokens: [nativeToken, ...commonTokensCache.toArr()],
 }) as TokenStore));
 
@@ -65,8 +65,8 @@ const selectors = {
 export const startSubToken = () => {
     const unsub = metaMaskStore.subscribe(state => state.status, (status) => {
         if (status === 'not-installed') {
-            currentTokenStore.setState({ currentToken: nativeToken });
-            LocalStorage.setItem({ key: 'currentToken', data: nativeToken, namespace: 'cross-space' });
+            currentTokenStore.setState({ currentToken: FansCoin as Token });
+            LocalStorage.setItem({ key: 'currentToken', data: FansCoin, namespace: 'cross-space' });
         }
     }, { fireImmediately: true });
 
@@ -80,7 +80,7 @@ export const setCurrentToken = (currentToken: Token) => {
 
     if (!currentToken.isNative) {
         commonTokensCache.set(currentToken.native_address, currentToken);
-        currentTokenStore.setState({ commonTokens: [nativeToken, ...commonTokensCache.toArr()] });
+        currentTokenStore.setState({ commonTokens: [FansCoin as Token, nativeToken, ...commonTokensCache.toArr()] });
     }
 }
 
@@ -90,7 +90,7 @@ export const useToken = () => {
 
     const deleteFromCommonTokens = useCallback((deleteToken: Token) => {
         if (!commonTokensCache.delete(deleteToken.native_address)) return;
-        currentTokenStore.setState({ commonTokens: [nativeToken, ...commonTokensCache.toArr()] });
+        currentTokenStore.setState({ commonTokens: [FansCoin as Token, nativeToken, ...commonTokensCache.toArr()] });
     }, []);
 
     return { currentToken, setCurrentToken, commonTokens, deleteFromCommonTokens };
